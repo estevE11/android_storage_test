@@ -27,6 +27,10 @@ import com.example.android_storage_test.ui.login.LoginViewModel;
 import com.example.android_storage_test.ui.login.LoginViewModelFactory;
 import com.example.android_storage_test.databinding.ActivityLoginBinding;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
@@ -34,6 +38,40 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        // Saving a file to storage
+
+        String testString = "caca";
+
+        File file = new File(getExternalFilesDir(null), "testfile.txt");
+        FileOutputStream outputStream = null;
+
+        try {
+            outputStream = new FileOutputStream((file));
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            // get the content in bytes
+            byte[] contentInBytes = testString.getBytes();
+
+            outputStream.write(contentInBytes);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // END OF Savinga file to storage
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
