@@ -27,6 +27,9 @@ import com.example.android_storage_test.ui.login.LoginViewModel;
 import com.example.android_storage_test.ui.login.LoginViewModelFactory;
 import com.example.android_storage_test.databinding.ActivityLoginBinding;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,9 +44,14 @@ public class LoginActivity extends AppCompatActivity {
 
         // Saving a file to storage
 
-        String testString = "caca";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("testname", "testValue");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        File file = new File(getExternalFilesDir(null), "testfile.txt");
+        File file = new File(getExternalFilesDir(null), "testfile.json");
         FileOutputStream outputStream = null;
 
         try {
@@ -53,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             // get the content in bytes
-            byte[] contentInBytes = testString.getBytes();
+            byte[] contentInBytes = jsonObject.toString().getBytes();
 
             outputStream.write(contentInBytes);
             outputStream.flush();
